@@ -6,7 +6,7 @@ import { Pencil, Plus, Trash2, LogOut } from "lucide-react";
 
 export const Route = createFileRoute("/atelier-privado")({
   component: AdminPage,
-  head: () => ({ meta: [{ title: "Admin · Noir & Or" }] }),
+  head: () => ({ meta: [{ title: "Atelier · Noir &amp; Or" }] }),
 });
 
 type Product = {
