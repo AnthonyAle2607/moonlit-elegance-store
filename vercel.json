@@ -1,14 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "bun run build",
+  "buildCommand": "bun run build && cp -r dist/server api/dist-server",
   "installCommand": "bun install",
   "framework": null,
   "outputDirectory": "dist/client",
-  "functions": {
-    "api/server.js": {
-      "includeFiles": "dist/server/**"
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
