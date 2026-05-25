@@ -13,7 +13,6 @@ export function Header() {
         </Link>
         <nav className="hidden md:flex items-center gap-8 text-sm tracking-[0.2em] uppercase text-muted-foreground">
           <Link to="/" className="hover:text-primary transition-colors">Colección</Link>
-          <Link to="/admin" className="hover:text-primary transition-colors">Admin</Link>
         </nav>
         <button
           onClick={open}
