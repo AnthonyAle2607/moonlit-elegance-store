@@ -71,36 +71,72 @@
   --gold: oklch(0.78 0.12 85);
   --wine: oklch(0.35 0.12 15);
 
-  --gradient-night: radial-gradient(1200px 600px at 50% -10%, oklch(0.22 0.04 15 / 0.5), transparent 70%);
-  --shadow-gold: 0 0 30px -10px oklch(0.78 0.12 85 / 0.35);
-  --shadow-elegant: 0 30px 60px -30px oklch(0 0 0 / 0.6);
+  --gradient-night: radial-gradient(1200px 700px at 50% -10%, oklch(0.35 0.14 15 / 0.45), transparent 65%),
+                    radial-gradient(900px 500px at 90% 20%, oklch(0.4 0.1 80 / 0.18), transparent 70%),
+                    radial-gradient(700px 500px at 10% 80%, oklch(0.3 0.13 15 / 0.25), transparent 70%);
+  --gradient-gold: linear-gradient(135deg, oklch(0.82 0.13 85), oklch(0.68 0.14 70));
+  --gradient-wine: linear-gradient(135deg, oklch(0.4 0.16 15), oklch(0.28 0.12 10));
+  --shadow-gold: 0 0 40px -8px oklch(0.78 0.14 85 / 0.55);
+  --shadow-gold-soft: 0 10px 50px -15px oklch(0.78 0.14 85 / 0.35);
+  --shadow-elegant: 0 30px 70px -25px oklch(0 0 0 / 0.75), 0 0 0 1px oklch(0.78 0.12 85 / 0.08);
+  --shadow-wine: 0 20px 60px -20px oklch(0.35 0.16 15 / 0.6);
+  --transition-silk: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
-
+  * { border-color: var(--color-border); }
   html, body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-
   body {
     background-image: var(--gradient-night);
     background-attachment: fixed;
   }
-
   h1, h2, h3, h4, .font-serif {
     font-family: var(--font-serif);
     letter-spacing: -0.01em;
   }
+  ::selection { background: var(--gold); color: var(--background); }
 }
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
   .glow-gold { box-shadow: var(--shadow-gold); }
+  .glow-gold-soft { box-shadow: var(--shadow-gold-soft); }
   .shadow-elegant { box-shadow: var(--shadow-elegant); }
+  .shadow-wine { box-shadow: var(--shadow-wine); }
+  .bg-gradient-gold { background-image: var(--gradient-gold); }
+  .bg-gradient-wine { background-image: var(--gradient-wine); }
+  .text-gradient-gold {
+    background-image: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .transition-silk { transition: all 0.6s var(--transition-silk); }
+
+  @keyframes shimmer-x {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .shimmer {
+    background: linear-gradient(110deg, transparent 35%, oklch(0.78 0.14 85 / 0.25) 50%, transparent 65%);
+    background-size: 200% 100%;
+    animation: shimmer-x 3s infinite;
+  }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .float-slow { animation: float-slow 7s ease-in-out infinite; }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 30px -10px oklch(0.78 0.14 85 / 0.4); }
+    50% { box-shadow: 0 0 60px -8px oklch(0.78 0.14 85 / 0.7); }
+  }
+  .glow-pulse { animation: glow-pulse 3.5s ease-in-out infinite; }
 }

@@ -32,23 +32,40 @@ function Index() {
     <main>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border/40">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-24 md:py-36 text-center">
-          <p className="text-[11px] uppercase tracking-[0.4em] text-primary">+18 · Confidencial</p>
-          <h1 className="mt-6 font-serif text-5xl sm:text-7xl md:text-8xl leading-[0.95] text-balance">
+        {/* decorative orbs */}
+        <div aria-hidden className="pointer-events-none absolute -top-32 left-1/2 h-[480px] w-[480px] -translate-x-1/2 rounded-full bg-gradient-gold opacity-[0.08] blur-3xl float-slow" />
+        <div aria-hidden className="pointer-events-none absolute top-40 -right-24 h-[360px] w-[360px] rounded-full bg-gradient-wine opacity-30 blur-3xl float-slow" style={{ animationDelay: "1.5s" }} />
+        <div aria-hidden className="pointer-events-none absolute -bottom-20 -left-20 h-[300px] w-[300px] rounded-full bg-gradient-gold opacity-[0.06] blur-3xl float-slow" style={{ animationDelay: "3s" }} />
+
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-8 py-24 md:py-36 text-center">
+          <p className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-background/40 px-4 py-1.5 text-[11px] uppercase tracking-[0.4em] text-primary backdrop-blur">
+            <span className="h-1 w-1 rounded-full bg-primary glow-pulse" />
+            +18 · Confidencial
+          </p>
+          <h1 className="mt-8 font-serif text-5xl sm:text-7xl md:text-8xl leading-[0.95] text-balance">
             Bienestar íntimo,
             <br />
-            <span className="italic text-primary">elegancia nocturna.</span>
+            <span className="italic text-gradient-gold">elegancia nocturna.</span>
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-base text-muted-foreground text-balance">
             Una colección discreta de piezas seleccionadas para quienes entienden que
             el deseo, como el lujo, no se anuncia. Se susurra.
           </p>
-          <a
-            href="#coleccion"
-            className="mt-10 inline-flex items-center justify-center rounded-md border border-primary px-8 py-4 text-xs uppercase tracking-[0.3em] text-primary transition-all hover:bg-primary hover:text-primary-foreground hover:glow-gold"
-          >
-            Explorar la colección
-          </a>
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="#coleccion"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-gradient-gold px-10 py-4 text-xs uppercase tracking-[0.3em] text-primary-foreground shadow-[var(--shadow-gold)] transition-silk hover:scale-[1.03] hover:shadow-[0_0_60px_-5px_var(--gold)]"
+            >
+              <span className="relative z-10">Explorar la colección</span>
+              <span aria-hidden className="absolute inset-0 shimmer opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            </a>
+            <a
+              href="#coleccion"
+              className="inline-flex items-center justify-center rounded-full border border-border/80 bg-background/30 px-8 py-4 text-xs uppercase tracking-[0.3em] text-foreground/80 backdrop-blur transition-silk hover:border-primary hover:text-primary"
+            >
+              Novedades
+            </a>
+          </div>
         </div>
         <div className="pointer-events-none absolute inset-x-0 -bottom-32 h-64 bg-gradient-to-t from-background to-transparent" />
       </section>
