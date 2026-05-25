@@ -4,14 +4,15 @@
   "installCommand": "bun install",
   "framework": null,
   "outputDirectory": "dist/client",
-  "rewrites": [
-    { "source": "/_build/(.*)", "destination": "/_build/$1" },
-    { "source": "/(.*)", "destination": "/api/server" }
-  ],
   "functions": {
     "api/server.js": {
-      "runtime": "nodejs20.x",
       "includeFiles": "dist/server/**"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/server"
+    }
+  ]
 }
