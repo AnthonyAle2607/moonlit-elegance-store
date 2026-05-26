@@ -50,9 +50,13 @@ export function AdminPage() {
   const [form, setForm] = useState<FormState>(empty);
   const [waNumber, setWaNumber] = useState("");
 
-  const load = useCallback(async () => {
-    const { data } = await supabase.from("products").select("*").order("created_at", { ascending: false });
-    setProducts((data ?? []) as Product[]);
+  const load = useCallback(() => {
+    const local = localStorage.getItem("mock_products");
+    if (local) {
+      setProducts(JSON.parse(local));
+    } else {
+      setProducts([]);
+    }
   }, []);
 
   useEffect(() => {
@@ -65,8 +69,8 @@ export function AdminPage() {
       setIsAdmin(true);
       setAuthChecked(true);
       load();
-      const { data: ws } = await supabase.from("site_settings").select("value").eq("key", "whatsapp_number").maybeSingle();
-      if (ws?.value) setWaNumber(ws.value);
+      const ws = localStorage.getItem("mock_wa");
+      if (ws) setWaNumber(ws);
     };
     init();
   }, [navigate, load]);
@@ -78,7 +82,8 @@ export function AdminPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = {
+    const payload: Product = {
+      id: form.id || crypto.randomUUID(),
       title: form.title,
       description: form.description || null,
       image_url: form.image_url || null,
@@ -87,15 +92,16 @@ export function AdminPage() {
       is_promo: form.is_promo,
       stock: Number(form.stock) || 0,
     };
+    
+    let next: Product[];
     if (form.id) {
-      const { error } = await supabase.from("products").update(payload).eq("id", form.id);
-      if (error) return toast.error(error.message);
+      next = products.map(p => p.id === form.id ? payload : p);
       toast.success("Producto actualizado");
     } else {
-      const { error } = await supabase.from("products").insert(payload);
-      if (error) return toast.error(error.message);
+      next = [payload, ...products];
       toast.success("Producto creado");
     }
+    localStorage.setItem("mock_products", JSON.stringify(next));
     setForm(empty);
     load();
   };
@@ -114,15 +120,14 @@ export function AdminPage() {
 
   const remove = async (id: string) => {
     if (!confirm("¿Eliminar este producto?")) return;
-    const { error } = await supabase.from("products").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    const next = products.filter(p => p.id !== id);
+    localStorage.setItem("mock_products", JSON.stringify(next));
     toast.success("Eliminado");
     load();
   };
 
   const saveWhatsApp = async () => {
-    const { error } = await supabase.from("site_settings").update({ value: waNumber }).eq("key", "whatsapp_number");
-    if (error) return toast.error(error.message);
+    localStorage.setItem("mock_wa", waNumber);
     toast.success("Número actualizado");
   };
 
@@ -214,23 +219,23 @@ export function AdminPage() {
           <h2 className="font-serif text-2xl mb-5">Catálogo ({products.length})</h2>
           <ul className="space-y-3">
             {products.map((p) => (
-              <li key={p.id} className="flex items-center gap-4 rounded-md border border-border/60 bg-card/60 p-3">
-                <div className="h-16 w-16 shrink-0 overflow-hidden rounded bg-muted">
+              <li key={p.id} className="flex items-center gap-4 rounded-md border border-border bg-card p-4 shadow-sm">
+                <div className="h-16 w-16 shrink-0 overflow-hidden rounded bg-muted/80">
                   {p.image_url && <img src={p.image_url} alt={p.title} className="h-full w-full object-cover" />}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-serif text-lg truncate">{p.title}</h3>
-                  <p className="text-xs text-muted-foreground">
+                  <h3 className="font-serif text-xl truncate text-foreground">{p.title}</h3>
+                  <p className="text-sm text-foreground/80 mt-1 font-medium">
                     Stock: {p.stock} ·{" "}
                     {p.is_promo && p.sale_price != null ? (
-                      <span><span className="text-primary">${p.sale_price}</span> <span className="line-through">${p.price}</span></span>
+                      <span><span className="text-primary">${p.sale_price}</span> <span className="line-through text-muted-foreground text-xs ml-1">${p.price}</span></span>
                     ) : (
                       <span className="text-primary">${p.price}</span>
                     )}
                   </p>
                 </div>
-                <button onClick={() => edit(p)} className="p-2 text-muted-foreground hover:text-primary" aria-label="Editar"><Pencil className="h-4 w-4" /></button>
-                <button onClick={() => remove(p.id)} className="p-2 text-muted-foreground hover:text-destructive" aria-label="Eliminar"><Trash2 className="h-4 w-4" /></button>
+                <button onClick={() => edit(p)} className="p-3 text-muted-foreground hover:text-primary transition-colors bg-input/20 rounded-md" aria-label="Editar"><Pencil className="h-4 w-4" /></button>
+                <button onClick={() => remove(p.id)} className="p-3 text-muted-foreground hover:text-destructive transition-colors bg-input/20 rounded-md" aria-label="Eliminar"><Trash2 className="h-4 w-4" /></button>
               </li>
             ))}
           </ul>
