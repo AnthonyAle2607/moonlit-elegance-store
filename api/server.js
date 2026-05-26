@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // dist/server is included via vercel.json functions configuration
-const serverPath = path.join(__dirname, "../dist/server/server.js");
+const serverPath = path.join(__dirname, "../dist/server/index.js");
 
 let _nodeHandler;
 let _initError;
