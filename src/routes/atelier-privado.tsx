@@ -57,19 +57,12 @@ export function AdminPage() {
 
   useEffect(() => {
     const init = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
+      const isAuth = localStorage.getItem("mock_auth") === "true";
+      if (!isAuth) {
         navigate({ to: "/login" });
         return;
       }
-      setUserId(session.user.id);
-      const { data: roleRow } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "admin")
-        .maybeSingle();
-      setIsAdmin(!!roleRow);
+      setIsAdmin(true);
       setAuthChecked(true);
       load();
       const { data: ws } = await supabase.from("site_settings").select("value").eq("key", "whatsapp_number").maybeSingle();
@@ -79,7 +72,7 @@ export function AdminPage() {
   }, [navigate, load]);
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    localStorage.removeItem("mock_auth");
     navigate({ to: "/login" });
   };
 
